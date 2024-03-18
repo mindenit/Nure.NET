@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageProjectUrl>https://api.mindenit.tech</PackageProjectUrl>
-    <PackageLicenseExpression>GPL-3.0+</PackageLicenseExpression>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mindenit/Nure.NET</RepositoryUrl>
   </PropertyGroup>
 
