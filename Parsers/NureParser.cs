@@ -37,37 +37,101 @@ public class NureParser
 
         return "Лк";
     }
-    
+
     public static List<Auditory>? ParseAuditories()
     {
         List<Auditory>? auditories = new List<Auditory>();
 
         var json = JsonFixers.TryFix(Requests.GetAuditoriesJson());
-        auditories = RemoveDuplicateAuditories(JsonSerializer.Deserialize<List<Auditory>>(json));
+        dynamic cistAuditories = JsonSerializer.Deserialize<dynamic>(json);
 
-        return auditories;
+        if (cistAuditories?.university?.buildings != null)
+        {
+            foreach (var building in cistAuditories.university.buildings)
+            {
+                if (building.auditories != null)
+                {
+                    foreach (var auditory in building.auditories)
+                    {
+                        auditories.Add(new Auditory
+                        {
+                            Id = Convert.ToInt32(auditory.id),
+                            Name = auditory.short_name,
+                        });
+                    }
+                }
+            }
+        }
+
+        return RemoveDuplicateAuditories(auditories);
     }
-    
+
     private static List<Auditory> RemoveDuplicateAuditories(List<Auditory> list)
     {
         return list.GroupBy(x => new { x.Id, x.Name })
             .Select(x => x.First())
             .ToList();
     }
-    
+
     private static Auditory? GetAuditoryByName(List<Auditory> auditories, string name)
     {
         return auditories.FirstOrDefault(a => a.Name == name);
     }
-    
+
     public static List<Group>? ParseGroups()
     {
         List<Group>? groups = new List<Group>();
 
         var json = JsonFixers.TryFix(Requests.GetGroupsJson());
-        groups = RemoveDuplicateGroups(JsonSerializer.Deserialize<List<Group>>(json));
-        
-        return groups;
+        var data = JsonSerializer.Deserialize<JsonElement>(json);
+
+        if (data.TryGetProperty("university", out var university) &&
+            university.TryGetProperty("faculties", out var faculties))
+        {
+            foreach (var faculty in faculties.EnumerateArray())
+            {
+                if (faculty.TryGetProperty("directions", out var directions))
+                {
+                    foreach (var direction in directions.EnumerateArray())
+                    {
+                        if (direction.TryGetProperty("groups", out var groupsArray))
+                        {
+                            foreach (var groupElement in groupsArray.EnumerateArray())
+                            {
+                                var group = new Group
+                                {
+                                    Id = groupElement.GetProperty("id").GetInt32(),
+                                    Name = groupElement.GetProperty("name").GetString(),
+                                };
+                                groups.Add(group);
+                            }
+                        }
+
+                        if (direction.TryGetProperty("specialities", out var specialities))
+                        {
+                            foreach (var speciality in specialities.EnumerateArray())
+                            {
+                                if (speciality.TryGetProperty("groups", out var specialityGroups))
+                                {
+                                    foreach (var groupElement in specialityGroups.EnumerateArray())
+                                    {
+                                        var group = new Group
+                                        {
+                                            Id = groupElement.GetProperty("id").GetInt32(),
+                                            Name = groupElement.GetProperty("name").GetString(),
+                                        };
+                                        groups.Add(group);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return RemoveDuplicateGroups(groups);
     }
 
     private static List<Group> RemoveDuplicateGroups(List<Group> deserialize)
@@ -76,15 +140,62 @@ public class NureParser
             .Select(x => x.First())
             .ToList();
     }
-    
+
     public static List<Teacher>? ParseTeachers()
     {
         List<Teacher>? teachers = new List<Teacher>();
 
         var json = JsonFixers.TryFix(Requests.GetTeachersJson());
-        teachers = RemoveDuplicateTeachers(JsonSerializer.Deserialize<List<Teacher>>(json));
-        
-        return teachers;
+        var data = JsonSerializer.Deserialize<JsonElement>(json);
+
+        if (data.TryGetProperty("university", out var university) &&
+            university.TryGetProperty("faculties", out var faculties))
+        {
+            foreach (var faculty in faculties.EnumerateArray())
+            {
+                if (faculty.TryGetProperty("departments", out var departments))
+                {
+                    foreach (var department in departments.EnumerateArray())
+                    {
+                        if (department.TryGetProperty("teachers", out var teachersArray))
+                        {
+                            foreach (var teacherElement in teachersArray.EnumerateArray())
+                            {
+                                var teacher = new Teacher
+                                {
+                                    Id = teacherElement.GetProperty("id").GetInt32(),
+                                    FullName = teacherElement.GetProperty("full_name").GetString(),
+                                    ShortName = teacherElement.GetProperty("short_name").GetString(),
+                                };
+                                teachers.Add(teacher);
+                            }
+                        }
+
+                        if (department.TryGetProperty("departments", out var childDepartments))
+                        {
+                            foreach (var childDepartment in childDepartments.EnumerateArray())
+                            {
+                                if (childDepartment.TryGetProperty("teachers", out var childTeachers))
+                                {
+                                    foreach (var teacherElement in childTeachers.EnumerateArray())
+                                    {
+                                        var teacher = new Teacher
+                                        {
+                                            Id = teacherElement.GetProperty("id").GetInt32(),
+                                            FullName = teacherElement.GetProperty("full_name").GetString(),
+                                            ShortName = teacherElement.GetProperty("short_name").GetString(),
+                                        };
+                                        teachers.Add(teacher);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return RemoveDuplicateTeachers(teachers);
     }
 
     private static List<Teacher> RemoveDuplicateTeachers(List<Teacher>? deserialize)
@@ -93,7 +204,7 @@ public class NureParser
             .Select(x => x.First())
             .ToList();
     }
-    
+
     private static Subject? FindSubjectById(JsonElement subjects, int? id)
     {
         foreach (var subject in subjects.EnumerateArray())
@@ -109,9 +220,10 @@ public class NureParser
             }
         }
 
-        return null; // Return null if no class with the given identifier is found
+        return null; // Return null if no subject with the given identifier is found
     }
-    
+
+
     private static Teacher? FindTeacherById(JsonElement teachers, int? id)
     {
         foreach (var teacher in teachers.EnumerateArray())
@@ -136,7 +248,7 @@ public class NureParser
 
         return null; // Return null if no teacher with the given identifier is found
     }
-    
+
     private static Group? FindGroupById(JsonElement groups, int? id)
     {
         foreach (var group in groups.EnumerateArray())
@@ -159,8 +271,6 @@ public class NureParser
         return null; // Return null if no group with the given identifier is found
     }
     
-    
-    
     public static List<Event> ParseEvents(string json)
     {
         var data = JsonSerializer.Deserialize<JsonElement>(json);
@@ -178,14 +288,14 @@ public class NureParser
 
             pair.auditory = lesson.GetProperty("auditory").GetString();
 
-            pair.subject = FindSubjectById(events.GetProperty("subjects"), lesson.GetProperty("subject_id").GetInt32());
+            pair.subject = FindSubjectById(data.GetProperty("subjects"), lesson.GetProperty("subject_id").GetInt32());
 
             if (lesson.TryGetProperty("teachers", out var teachersProperty) && teachersProperty.GetArrayLength() > 0)
             {
                 pair.teachers = new List<Teacher>();
                 foreach (var teacher in teachersProperty.EnumerateArray())
                 {
-                    pair.teachers.Add(FindTeacherById(events.GetProperty("teachers"), teacher.GetInt32()));
+                    pair.teachers.Add(FindTeacherById(data.GetProperty("teachers"), teacher.GetInt32()));
                 }
             }
             else
@@ -198,7 +308,7 @@ public class NureParser
                 pair.groups = new List<Group>();
                 foreach (var group in groupsProperty.EnumerateArray())
                 {
-                    var foundGroup = FindGroupById(events.GetProperty("groups"), group.GetInt32());
+                    var foundGroup = FindGroupById(data.GetProperty("groups"), group.GetInt32());
                     pair.groups.Add(foundGroup);
                 }
             }

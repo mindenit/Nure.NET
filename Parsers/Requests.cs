@@ -122,7 +122,7 @@ public class Requests
         using (HttpClient httpClient = new HttpClient())
         {
             var webRequest = WebRequest.Create($"https://cist.nure.ua/ias/app/tt/P_API_EVEN_JSON?" +
-                                               $"type_id={type}" +
+                                               $"type_id={(int)type}" +
                                                $"&timetable_id={id}" +
                                                $"&time_from={StartTime()}" +
                                                $"&time_to={EndTime()}" +
