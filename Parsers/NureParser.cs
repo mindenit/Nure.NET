@@ -10,11 +10,11 @@ public class NureParser
 {
     private static string GetType(int? id)
     {
-        if (id == 10 || id == 12)
+        if (id is 10 or 12)
         {
             return "Пз";
         }
-        else if (id == 20 | id == 21 || id == 22 || id == 23 || id == 24)
+        else if (id == 20 || id == 21 || id == 22 || id == 23 || id == 24)
         {
             return "Лб";
         }

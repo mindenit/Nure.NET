@@ -4,7 +4,7 @@ using Nure.NET.Types;
 
 namespace Nure.NET;
 
-public class Nure
+public static class Nure
 {
     public static List<Auditory>? GetAuditories()
     {
