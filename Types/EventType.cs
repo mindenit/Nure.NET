@@ -2,7 +2,7 @@ namespace Nure.NET.Types;
 
 public enum EventType
 {
-    Group,
+    Group = 1,
     Teacher,
     Auditory
 }
