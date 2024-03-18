@@ -15,8 +15,8 @@ namespace Nure.NET.Types;
 
     public class Subject
     {
-        public int? id { get; set; }
-        public string? title { get; set; }
-        public string? brief { get; set; }
+        public int? Id { get; set; }
+        public string? Title { get; set; }
+        public string? Brief { get; set; }
     }
 
