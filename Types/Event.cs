@@ -3,14 +3,14 @@ namespace Nure.NET.Types;
 
     public class Event
     {
-        public int? numberPair { get; set; }
+        public int? NumberPair { get; set; }
         public Subject? subject { get; set; }
-        public long? startTime { get; set; }
-        public long? endTime { get; set; }
-        public string? auditory { get; set; }
-        public string? type { get; set; }
-        public List<Teacher>? teachers { get; set; } = new List<Teacher>();
-        public List<Group>? groups { get; set; } = new List<Group>();
+        public long? StartTime { get; set; }
+        public long? EndTime { get; set; }
+        public string? Auditory { get; set; }
+        public string? Type { get; set; }
+        public List<Teacher>? Teachers { get; set; } = new List<Teacher>();
+        public List<Group>? Groups { get; set; } = new List<Group>();
     }
 
     public class Subject

@@ -281,45 +281,45 @@ public class NureParser
         foreach (var lesson in events.EnumerateArray())
         {
             Event pair = new Event();
-            pair.numberPair = lesson.GetProperty("number_pair").GetInt32();
-            pair.startTime = lesson.GetProperty("start_time").GetInt64();
-            pair.endTime = lesson.GetProperty("end_time").GetInt64();
-            pair.type = GetType(lesson.GetProperty("type").GetInt32());
+            pair.NumberPair = lesson.GetProperty("number_pair").GetInt32();
+            pair.StartTime = lesson.GetProperty("start_time").GetInt64();
+            pair.EndTime = lesson.GetProperty("end_time").GetInt64();
+            pair.Type = GetType(lesson.GetProperty("type").GetInt32());
 
-            pair.auditory = lesson.GetProperty("auditory").GetString();
+            pair.Auditory = lesson.GetProperty("auditory").GetString();
 
             pair.subject = FindSubjectById(data.GetProperty("subjects"), lesson.GetProperty("subject_id").GetInt32());
 
             if (lesson.TryGetProperty("teachers", out var teachersProperty) && teachersProperty.GetArrayLength() > 0)
             {
-                pair.teachers = new List<Teacher>();
+                pair.Teachers = new List<Teacher>();
                 foreach (var teacher in teachersProperty.EnumerateArray())
                 {
-                    pair.teachers.Add(FindTeacherById(data.GetProperty("teachers"), teacher.GetInt32()));
+                    pair.Teachers.Add(FindTeacherById(data.GetProperty("teachers"), teacher.GetInt32()));
                 }
             }
             else
             {
-                pair.teachers = new List<Teacher>();
+                pair.Teachers = new List<Teacher>();
             }
 
             if (lesson.TryGetProperty("groups", out var groupsProperty) && groupsProperty.GetArrayLength() > 0)
             {
-                pair.groups = new List<Group>();
+                pair.Groups = new List<Group>();
                 foreach (var group in groupsProperty.EnumerateArray())
                 {
                     var foundGroup = FindGroupById(data.GetProperty("groups"), group.GetInt32());
-                    pair.groups.Add(foundGroup);
+                    pair.Groups.Add(foundGroup);
                 }
             }
             else
             {
-                pair.groups = new List<Group>();
+                pair.Groups = new List<Group>();
             }
 
             pairs.Add(pair);
         }
 
-        return pairs.OrderBy(x => x.startTime).ToList();
+        return pairs.OrderBy(x => x.StartTime).ToList();
     }
 }
