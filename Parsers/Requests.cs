@@ -14,7 +14,7 @@ public class Requests
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+            return "";
         }
         else
         {
@@ -55,7 +55,7 @@ public class Requests
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+            return "";
         }
         else
         {
@@ -97,7 +97,7 @@ public class Requests
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+            return "";
         }
         else
         {
@@ -159,7 +159,7 @@ public class Requests
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+            return "";
         }
         else
         {
