@@ -2,7 +2,8 @@
 
 .NET library for work with cist.nure.ua. That library allows you to get information about schedule, teachers, groups, and other information from the site cist.nure.ua.
 
-> **Note:** This library is not official and is not supported by the site cist.nure.ua.
+> [!NOTE]
+> This library is not official and is not supported by the site cist.nure.ua.
 > **But**, it is supported by students and Mindenit Team :)
 
 Below you will find a short guide to using this library.
