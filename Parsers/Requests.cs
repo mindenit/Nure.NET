@@ -10,7 +10,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("www.google.com");
+        var result = ping.Send("cist.nure.ua", 300);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -51,7 +51,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("www.google.com");
+        var result = ping.Send("cist.nure.ua", 300);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -93,7 +93,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("www.google.com");
+        var result = ping.Send("cist.nure.ua", 300);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -155,7 +155,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("www.google.com");
+        var result = ping.Send("cist.nure.ua", 300);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
