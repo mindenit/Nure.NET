@@ -124,6 +124,8 @@ public class Requests
                     // Remove BOM
                     json = json.TrimStart('\uFEFF');
 
+                    json += "]}}";
+
                     return json;
                 }
             }
