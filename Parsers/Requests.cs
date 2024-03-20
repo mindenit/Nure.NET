@@ -8,90 +8,124 @@ public class Requests
 {
     public static string GetAuditoriesJson()
     {
-        using (HttpClient httpClient = new HttpClient())
+        var ping = new System.Net.NetworkInformation.Ping();
+
+        var result = ping.Send("www.google.com");
+
+        if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            var webRequest = WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_AUDITORIES_JSON") as HttpWebRequest;
-
-            webRequest.ContentType = "application/json";
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            using (var webResponse = webRequest.GetResponse())
-            using (var streamReader =
-                   new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
-            using (var memoryStream = new MemoryStream())
-            using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+        }
+        else
+        {
+            using (HttpClient httpClient = new HttpClient())
             {
-                streamWriter.Write(streamReader.ReadToEnd());
-                streamWriter.Flush();
-                memoryStream.Position = 0;
+                var webRequest = WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_AUDITORIES_JSON") as HttpWebRequest;
 
-                var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+                webRequest.ContentType = "application/json";
 
-                // Remove BOM
-                json = json.TrimStart('\uFEFF');
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-                return json;
+                using (var webResponse = webRequest.GetResponse())
+                using (var streamReader =
+                       new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
+                using (var memoryStream = new MemoryStream())
+                using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+                {
+                    streamWriter.Write(streamReader.ReadToEnd());
+                    streamWriter.Flush();
+                    memoryStream.Position = 0;
+
+                    var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+
+                    // Remove BOM
+                    json = json.TrimStart('\uFEFF');
+
+                    return json;
+                }
             }
         }
     }
 
     public static string GetGroupsJson()
     {
-        using (HttpClient httpClient = new HttpClient())
+        var ping = new System.Net.NetworkInformation.Ping();
+
+        var result = ping.Send("www.google.com");
+
+        if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            var webRequest = WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_GROUP_JSON") as HttpWebRequest;
-
-            webRequest.ContentType = "application/json";
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            using (var webResponse = webRequest.GetResponse())
-            using (var streamReader =
-                   new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
-            using (var memoryStream = new MemoryStream())
-            using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+        }
+        else
+        {
+            using (HttpClient httpClient = new HttpClient())
             {
-                streamWriter.Write(streamReader.ReadToEnd());
-                streamWriter.Flush();
-                memoryStream.Position = 0;
+                var webRequest =
+                    WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_GROUP_JSON") as HttpWebRequest;
 
-                var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+                webRequest.ContentType = "application/json";
 
-                // Remove BOM
-                json = json.TrimStart('\uFEFF');
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-                return json;
+                using (var webResponse = webRequest.GetResponse())
+                using (var streamReader =
+                       new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
+                using (var memoryStream = new MemoryStream())
+                using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+                {
+                    streamWriter.Write(streamReader.ReadToEnd());
+                    streamWriter.Flush();
+                    memoryStream.Position = 0;
+
+                    var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+
+                    // Remove BOM
+                    json = json.TrimStart('\uFEFF');
+
+                    return json;
+                }
             }
         }
     }
 
     public static string GetTeachersJson()
     {
-        using (HttpClient httpClient = new HttpClient())
+        var ping = new System.Net.NetworkInformation.Ping();
+
+        var result = ping.Send("www.google.com");
+
+        if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            var webRequest = WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_PODR_JSON") as HttpWebRequest;
-
-            webRequest.ContentType = "application/json";
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            using (var webResponse = webRequest.GetResponse())
-            using (var streamReader =
-                   new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
-            using (var memoryStream = new MemoryStream())
-            using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+        }
+        else
+        {
+            using (HttpClient httpClient = new HttpClient())
             {
-                streamWriter.Write(streamReader.ReadToEnd());
-                streamWriter.Flush();
-                memoryStream.Position = 0;
+                var webRequest = WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_PODR_JSON") as HttpWebRequest;
 
-                var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+                webRequest.ContentType = "application/json";
 
-                // Remove BOM
-                json = json.TrimStart('\uFEFF');
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-                return json;
+                using (var webResponse = webRequest.GetResponse())
+                using (var streamReader =
+                       new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
+                using (var memoryStream = new MemoryStream())
+                using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+                {
+                    streamWriter.Write(streamReader.ReadToEnd());
+                    streamWriter.Flush();
+                    memoryStream.Position = 0;
+
+                    var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+
+                    // Remove BOM
+                    json = json.TrimStart('\uFEFF');
+
+                    return json;
+                }
             }
         }
     }
@@ -119,35 +153,46 @@ public class Requests
     
     public static string GetEventsJson(EventType type, long id)
     {
-        using (HttpClient httpClient = new HttpClient())
+        var ping = new System.Net.NetworkInformation.Ping();
+
+        var result = ping.Send("www.google.com");
+
+        if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            var webRequest = WebRequest.Create($"https://cist.nure.ua/ias/app/tt/P_API_EVEN_JSON?" +
-                                               $"type_id={(int)type}" +
-                                               $"&timetable_id={id}" +
-                                               $"&time_from={StartTime()}" +
-                                               $"&time_to={EndTime()}" +
-                                               "&idClient=KNURESked") as HttpWebRequest;
-
-            webRequest.ContentType = "application/json";
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            using (var webResponse = webRequest.GetResponse())
-            using (var streamReader =
-                   new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
-            using (var memoryStream = new MemoryStream())
-            using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+            throw new WebException("We can`t connect to cist.nure.ua. Please try again later.");
+        }
+        else
+        {
+            using (HttpClient httpClient = new HttpClient())
             {
-                streamWriter.Write(streamReader.ReadToEnd());
-                streamWriter.Flush();
-                memoryStream.Position = 0;
+                var webRequest = WebRequest.Create($"https://cist.nure.ua/ias/app/tt/P_API_EVEN_JSON?" +
+                                                   $"type_id={(int)type}" +
+                                                   $"&timetable_id={id}" +
+                                                   $"&time_from={StartTime()}" +
+                                                   $"&time_to={EndTime()}" +
+                                                   "&idClient=KNURESked") as HttpWebRequest;
 
-                var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+                webRequest.ContentType = "application/json";
 
-                // Remove BOM
-                json = json.TrimStart('\uFEFF');
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-                return json;
+                using (var webResponse = webRequest.GetResponse())
+                using (var streamReader =
+                       new StreamReader(webResponse.GetResponseStream(), Encoding.GetEncoding("windows-1251")))
+                using (var memoryStream = new MemoryStream())
+                using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+                {
+                    streamWriter.Write(streamReader.ReadToEnd());
+                    streamWriter.Flush();
+                    memoryStream.Position = 0;
+
+                    var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+
+                    // Remove BOM
+                    json = json.TrimStart('\uFEFF');
+
+                    return json;
+                }
             }
         }
     }

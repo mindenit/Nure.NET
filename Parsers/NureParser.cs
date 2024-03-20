@@ -273,53 +273,61 @@ public class NureParser
     
     public static List<Event> ParseEvents(string json)
     {
-        var data = JsonSerializer.Deserialize<JsonElement>(json);
-        var events = data.GetProperty("events");
-
-        List<Event> pairs = new List<Event>();
-
-        foreach (var lesson in events.EnumerateArray())
+        try
         {
-            Event pair = new Event();
-            pair.NumberPair = lesson.GetProperty("number_pair").GetInt32();
-            pair.StartTime = lesson.GetProperty("start_time").GetInt64();
-            pair.EndTime = lesson.GetProperty("end_time").GetInt64();
-            pair.Type = GetType(lesson.GetProperty("type").GetInt32());
+            var data = JsonSerializer.Deserialize<JsonElement>(json);
+            var events = data.GetProperty("events");
 
-            pair.Auditory = lesson.GetProperty("auditory").GetString();
+            List<Event> pairs = new List<Event>();
 
-            pair.subject = FindSubjectById(data.GetProperty("subjects"), lesson.GetProperty("subject_id").GetInt32());
-
-            if (lesson.TryGetProperty("teachers", out var teachersProperty) && teachersProperty.GetArrayLength() > 0)
+            foreach (var lesson in events.EnumerateArray())
             {
-                pair.Teachers = new List<Teacher>();
-                foreach (var teacher in teachersProperty.EnumerateArray())
+                Event pair = new Event();
+                pair.NumberPair = lesson.GetProperty("number_pair").GetInt32();
+                pair.StartTime = lesson.GetProperty("start_time").GetInt64();
+                pair.EndTime = lesson.GetProperty("end_time").GetInt64();
+                pair.Type = GetType(lesson.GetProperty("type").GetInt32());
+
+                pair.Auditory = lesson.GetProperty("auditory").GetString();
+
+                pair.Subject = FindSubjectById(data.GetProperty("subjects"), lesson.GetProperty("subject_id").GetInt32());
+
+                if (lesson.TryGetProperty("teachers", out var teachersProperty) && teachersProperty.GetArrayLength() > 0)
                 {
-                    pair.Teachers.Add(FindTeacherById(data.GetProperty("teachers"), teacher.GetInt32()));
+                    pair.Teachers = new List<Teacher>();
+                    foreach (var teacher in teachersProperty.EnumerateArray())
+                    {
+                        pair.Teachers.Add(FindTeacherById(data.GetProperty("teachers"), teacher.GetInt32()));
+                    }
                 }
-            }
-            else
-            {
-                pair.Teachers = new List<Teacher>();
-            }
-
-            if (lesson.TryGetProperty("groups", out var groupsProperty) && groupsProperty.GetArrayLength() > 0)
-            {
-                pair.Groups = new List<Group>();
-                foreach (var group in groupsProperty.EnumerateArray())
+                else
                 {
-                    var foundGroup = FindGroupById(data.GetProperty("groups"), group.GetInt32());
-                    pair.Groups.Add(foundGroup);
+                    pair.Teachers = new List<Teacher>();
                 }
-            }
-            else
-            {
-                pair.Groups = new List<Group>();
+
+                if (lesson.TryGetProperty("groups", out var groupsProperty) && groupsProperty.GetArrayLength() > 0)
+                {
+                    pair.Groups = new List<Group>();
+                    foreach (var group in groupsProperty.EnumerateArray())
+                    {
+                        var foundGroup = FindGroupById(data.GetProperty("groups"), group.GetInt32());
+                        pair.Groups.Add(foundGroup);
+                    }
+                }
+                else
+                {
+                    pair.Groups = new List<Group>();
+                }
+
+                pairs.Add(pair);
             }
 
-            pairs.Add(pair);
+            return pairs.OrderBy(x => x.StartTime).ToList();
         }
-
-        return pairs.OrderBy(x => x.StartTime).ToList();
+        catch (Exception)
+        {
+            return null;
+        }
+        
     }
 }

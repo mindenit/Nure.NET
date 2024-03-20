@@ -8,17 +8,38 @@ public static class Cist
 {
     public static List<Auditory>? GetAuditories()
     {
-        return NureParser.ParseAuditories();
+        try
+        {
+            return NureParser.ParseAuditories();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error while getting auditories", e);
+        }
     }
     
     public static List<Group>? GetGroups()
     {
-        return NureParser.ParseGroups();
+        try
+        {
+            return NureParser.ParseGroups();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error while getting groups", e);
+        }
     }
     
     public static List<Teacher>? GetTeachers()
     {
-        return NureParser.ParseTeachers();
+        try
+        {
+            return NureParser.ParseTeachers();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error while getting teachers", e);
+        }
     }
     
     public static List<Event>? GetEvents(long startTime, long endTime, EventType type, long id)

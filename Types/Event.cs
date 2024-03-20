@@ -4,7 +4,7 @@ namespace Nure.NET.Types;
     public class Event
     {
         public int? NumberPair { get; set; }
-        public Subject? subject { get; set; }
+        public Subject? Subject { get; set; }
         public long? StartTime { get; set; }
         public long? EndTime { get; set; }
         public string? Auditory { get; set; }
