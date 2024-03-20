@@ -42,9 +42,15 @@ public static class Cist
         }
     }
     
-    public static List<Event>? GetEvents(long startTime, long endTime, EventType type, long id)
+    public static List<Event>? GetEvents( EventType type, long id, long startTime = 0, long endTime = 0)
     {
         var json = JsonFixers.TryFix(Requests.GetEventsJson(type, id));
-        return NureParser.ParseEvents(json);
+        if(startTime == 0 && endTime == 0)
+            return NureParser.ParseEvents(json);
+        else
+        {
+            var events = NureParser.ParseEvents(json);
+            return events.Where(e => e.StartTime >= startTime && e.EndTime <= endTime).ToList();
+        }
     }
 }
