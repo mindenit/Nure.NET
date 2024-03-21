@@ -42,22 +42,25 @@ public class NureParser
     {
         List<Auditory>? auditories = new List<Auditory>();
 
-        var json = JsonFixers.TryFix(Requests.GetAuditoriesJson());
-        dynamic cistAuditories = JsonSerializer.Deserialize<dynamic>(json);
-
-        if (cistAuditories?.university?.buildings != null)
+        var json = Requests.GetAuditoriesJson();
+        var cistAuditories = JsonSerializer.Deserialize<JsonElement>(json);
+        
+        if (cistAuditories.TryGetProperty("university", out var university) &&
+            university.TryGetProperty("buildings", out var buildings))
         {
-            foreach (var building in cistAuditories.university.buildings)
+            foreach (var building in buildings.EnumerateArray())
             {
-                if (building.auditories != null)
+                if (building.TryGetProperty("auditories", out var auditoriesArray))
                 {
-                    foreach (var auditory in building.auditories)
+                    foreach (var auditoryElement in auditoriesArray.EnumerateArray())
                     {
-                        auditories.Add(new Auditory
+                        Console.WriteLine(auditoryElement);
+                        var auditory = new Auditory
                         {
-                            Id = Convert.ToInt32(auditory.id),
-                            Name = auditory.short_name,
-                        });
+                            Id = long.Parse(auditoryElement.GetProperty("id").GetString()),
+                            Name = auditoryElement.GetProperty("short_name").GetString(),
+                        };
+                        auditories.Add(auditory);
                     }
                 }
             }
