@@ -7,8 +7,8 @@
     <PackageProjectUrl>https://api.mindenit.tech</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mindenit/Nure.NET</RepositoryUrl>
-    <ApplicationVersion>0.8.5</ApplicationVersion>
-    <Version>0.8.5</Version>
+    <ApplicationVersion>0.8.6</ApplicationVersion>
+    <Version>0.8.6</Version>
   </PropertyGroup>
 
 </Project>
