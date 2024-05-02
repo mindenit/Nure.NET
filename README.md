@@ -1,7 +1,7 @@
 # Nure.NET
 
 > [!INFO]
-> Used by our (API)[https://github.com/mindenit/api]
+> Used by our [API](https://github.com/mindenit/api)
 
 .NET library for work with cist.nure.ua. That library allows you to get information about schedule, teachers, groups, and other information from the site cist.nure.ua.
 
