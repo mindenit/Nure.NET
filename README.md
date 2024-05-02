@@ -87,13 +87,13 @@ class Program
     static void Main()
     {
         /* Get schedule for group "КІУКІ-22-7", for other entities use EntityType enum
-            * EntityType.Group - for groups
-            * EntityType.Teacher - for teachers
-            * EntityType.Auditory - for auditories
+            * EventType.Group - for groups
+            * EventType.Teacher - for teachers
+            * EventType.Auditory - for auditories
            Default, if you don't specify startTime and endTime, method will return 
            all avilable lessons for that group.
         */
-        var schedule = Cist.GetEvents(10304333, EntityType.Group);
+        var schedule = Cist.GetEvents(10304333, EventType.Group);
         
         foreach (var lesson in schedule)
         {
