@@ -54,7 +54,6 @@ public class NureParser
                 {
                     foreach (var auditoryElement in auditoriesArray.EnumerateArray())
                     {
-                        Console.WriteLine(auditoryElement);
                         var auditory = new Auditory
                         {
                             Id = long.Parse(auditoryElement.GetProperty("id").GetString()),
