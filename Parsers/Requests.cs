@@ -10,7 +10,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("cist.nure.ua", 300);
+        var result = ping.Send("cist2.nure.ua", 500);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -20,7 +20,7 @@ public class Requests
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var webRequest = WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_AUDITORIES_JSON") as HttpWebRequest;
+                var webRequest = WebRequest.Create("https://cist2.nure.ua/ias/app/tt/P_API_AUDITORIES_JSON") as HttpWebRequest;
 
                 webRequest.ContentType = "application/json";
 
@@ -51,7 +51,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("cist.nure.ua", 300);
+        var result = ping.Send("cist2.nure.ua", 500);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -62,7 +62,7 @@ public class Requests
             using (HttpClient httpClient = new HttpClient())
             {
                 var webRequest =
-                    WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_GROUP_JSON") as HttpWebRequest;
+                    WebRequest.Create("https://cist2.nure.ua/ias/app/tt/P_API_GROUP_JSON") as HttpWebRequest;
 
                 webRequest.ContentType = "application/json";
 
@@ -93,7 +93,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("cist.nure.ua", 300);
+        var result = ping.Send("cist2.nure.ua", 500);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -103,7 +103,7 @@ public class Requests
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var webRequest = WebRequest.Create("https://cist.nure.ua/ias/app/tt/P_API_PODR_JSON") as HttpWebRequest;
+                var webRequest = WebRequest.Create("https://cist2.nure.ua/ias/app/tt/P_API_PODR_JSON") as HttpWebRequest;
 
                 webRequest.ContentType = "application/json";
 
@@ -157,7 +157,7 @@ public class Requests
     {
         var ping = new System.Net.NetworkInformation.Ping();
 
-        var result = ping.Send("cist.nure.ua", 300);
+        var result = ping.Send("cist2.nure.ua", 500);
 
         if (result.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -167,7 +167,7 @@ public class Requests
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var webRequest = WebRequest.Create($"https://cist.nure.ua/ias/app/tt/P_API_EVEN_JSON?" +
+                var webRequest = WebRequest.Create($"https://cist2.nure.ua/ias/app/tt/P_API_EVEN_JSON?" +
                                                    $"type_id={(int)type}" +
                                                    $"&timetable_id={id}" +
                                                    $"&time_from={StartTime()}" +
