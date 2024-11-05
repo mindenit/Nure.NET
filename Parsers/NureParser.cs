@@ -44,7 +44,7 @@ public class NureParser
 
         var json = Requests.GetAuditoriesJson();
         var cistAuditories = JsonSerializer.Deserialize<JsonElement>(json);
-        
+
         if (cistAuditories.TryGetProperty("university", out var university) &&
             university.TryGetProperty("buildings", out var buildings))
         {
@@ -207,121 +207,144 @@ public class NureParser
             .ToList();
     }
 
-    private static Subject? FindSubjectById(JsonElement subjects, int? id)
+    private static Subject? FindSubjectById(JsonArray subjects, int? id)
     {
-        foreach (var subject in subjects.EnumerateArray())
+        foreach (var subject in subjects)
         {
-            if (subject.GetProperty("id").GetInt32() == id)
+            if (subject is JsonObject subjectObj &&
+                subjectObj["id"]?.GetValue<int>() == id)
             {
-                return new Subject
+                return new Subject()
                 {
-                    Id = subject.GetProperty("id").GetInt32(),
-                    Brief = subject.GetProperty("brief").GetString(),
-                    Title = subject.GetProperty("title").GetString()
+                    Id = subjectObj["id"]!.GetValue<int>(),
+                    Brief = subjectObj["brief"]?.GetValue<string>(),
+                    Title = subjectObj["title"]?.GetValue<string>()
                 };
             }
         }
 
-        return null; // Return null if no subject with the given identifier is found
+        return null; // якщо предмет з таким ідентифікатором не знайдено
     }
 
 
-    private static Teacher? FindTeacherById(JsonElement teachers, int? id)
+    private static Teacher? FindTeacherById(JsonArray teachers, int? id)
     {
-        foreach (var teacher in teachers.EnumerateArray())
+        foreach (var teacher in teachers)
         {
-            if (teacher.TryGetProperty("id", out var idProperty) &&
-                teacher.TryGetProperty("short_name", out var shortNameProperty) &&
-                teacher.TryGetProperty("full_name", out var fullNameProperty))
+            if (teacher is JsonObject teacherObj &&
+                teacherObj["id"]?.GetValue<int>() == id &&
+                teacherObj["id"]?.GetValue<long?>() is not null &&
+                teacherObj["short_name"] is not null &&
+                teacherObj["full_name"] is not null)
             {
-                if (idProperty.ValueKind == JsonValueKind.Number &&
-                    shortNameProperty.ValueKind == JsonValueKind.String &&
-                    fullNameProperty.ValueKind == JsonValueKind.String)
+                return new Teacher()
                 {
-                    return new Teacher
-                    {
-                        Id = idProperty.GetInt64(),
-                        ShortName = shortNameProperty.GetString(),
-                        FullName = fullNameProperty.GetString()
-                    };
-                }
+                    Id = teacherObj["id"]!.GetValue<long>(),
+                    ShortName = teacherObj["short_name"]!.GetValue<string>(),
+                    FullName = teacherObj["full_name"]!.GetValue<string>()
+                };
             }
         }
 
-        return null; // Return null if no teacher with the given identifier is found
+        return null; // Повертаємо null, якщо вчителя не знайдено
     }
 
-    private static Group? FindGroupById(JsonElement groups, int? id)
+    private static Group? FindGroupById(JsonArray groups, int? id)
     {
-        foreach (var group in groups.EnumerateArray())
+        foreach (var group in groups)
         {
-            if (group.TryGetProperty("id", out var idProperty) &&
-                group.TryGetProperty("name", out var nameProperty))
+            if (group is JsonObject groupObj &&
+                groupObj["id"]?.GetValue<long>() == id &&
+                groupObj["name"] is not null)
             {
-                if (idProperty.ValueKind == JsonValueKind.Number &&
-                    nameProperty.ValueKind == JsonValueKind.String)
+                return new Group
                 {
-                    return new Group
-                    {
-                        Id = idProperty.GetInt64(),
-                        Name = nameProperty.GetString()
-                    };
-                }
+                    Id = groupObj["id"]!.GetValue<long>(),
+                    Name = groupObj["name"]!.GetValue<string>()
+                };
             }
         }
 
-        return null; // Return null if no group with the given identifier is found
+        return null; // Повертаємо null, якщо групу з таким ідентифікатором не знайдено
     }
-    
-    public static List<Event> ParseEvents(string json)
+
+    public static List<Event>? ParseEvents(string json)
     {
         try
         {
-            var data = JsonSerializer.Deserialize<JsonElement>(json);
-            var events = data.GetProperty("events");
+            var data = JsonNode.Parse(json)?.AsObject();
+            if (data == null || !data.ContainsKey("events"))
+                return null;
+
+            var events = data["events"]?.AsArray();
+            var subjects = data["subjects"]?.AsArray();
+            var teachers = data["teachers"]?.AsArray();
+            var groups = data["groups"]?.AsArray();
 
             List<Event> pairs = new List<Event>();
 
-            foreach (var lesson in events.EnumerateArray())
+            if (events != null)
             {
-                Event pair = new Event();
-                pair.NumberPair = lesson.GetProperty("number_pair").GetInt32();
-                pair.StartTime = lesson.GetProperty("start_time").GetInt64();
-                pair.EndTime = lesson.GetProperty("end_time").GetInt64();
-                pair.Type = GetType(lesson.GetProperty("type").GetInt32());
-
-                pair.Auditory = lesson.GetProperty("auditory").GetString();
-
-                pair.Subject = FindSubjectById(data.GetProperty("subjects"), lesson.GetProperty("subject_id").GetInt32());
-
-                if (lesson.TryGetProperty("teachers", out var teachersProperty) && teachersProperty.GetArrayLength() > 0)
+                foreach (var lesson in events)
                 {
-                    pair.Teachers = new List<Teacher>();
-                    foreach (var teacher in teachersProperty.EnumerateArray())
+                    if (lesson is not JsonObject lessonObj) continue;
+
+                    Event pair = new Event
                     {
-                        pair.Teachers.Add(FindTeacherById(data.GetProperty("teachers"), teacher.GetInt32()));
-                    }
-                }
-                else
-                {
-                    pair.Teachers = new List<Teacher>();
-                }
+                        NumberPair = lessonObj["number_pair"]?.GetValue<int>() ?? 0,
+                        StartTime = lessonObj["start_time"]?.GetValue<long>() ?? 0,
+                        EndTime = lessonObj["end_time"]?.GetValue<long>() ?? 0,
+                        Type = GetType(lessonObj["type"]?.GetValue<int>() ?? 0),
+                        Auditory = lessonObj["auditory"]?.GetValue<string>()
+                    };
 
-                if (lesson.TryGetProperty("groups", out var groupsProperty) && groupsProperty.GetArrayLength() > 0)
-                {
-                    pair.Groups = new List<Group>();
-                    foreach (var group in groupsProperty.EnumerateArray())
+                    if (subjects != null && lessonObj["subject_id"]?.GetValue<int>() is int subjectId)
                     {
-                        var foundGroup = FindGroupById(data.GetProperty("groups"), group.GetInt32());
-                        pair.Groups.Add(foundGroup);
+                        pair.Subject = FindSubjectById(subjects, subjectId);
                     }
-                }
-                else
-                {
-                    pair.Groups = new List<Group>();
-                }
 
-                pairs.Add(pair);
+                    if (lessonObj["teachers"] is JsonArray teachersProperty)
+                    {
+                        pair.Teachers = new List<Teacher>();
+                        foreach (var teacher in teachersProperty)
+                        {
+                            if (teacher.GetValue<int?>() is int teacherId && teachers != null)
+                            {
+                                var foundTeacher = FindTeacherById(teachers, teacherId);
+                                if (foundTeacher != null)
+                                {
+                                    pair.Teachers.Add(foundTeacher);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        pair.Teachers = new List<Teacher>();
+                    }
+
+                    if (lessonObj["groups"] is JsonArray groupsProperty)
+                    {
+                        pair.Groups = new List<Group>();
+                        foreach (var group in groupsProperty)
+                        {
+                            if (group.GetValue<int?>() is int groupId && groups != null)
+                            {
+                                var foundGroup = FindGroupById(groups, groupId);
+                                if (foundGroup != null)
+                                {
+                                    pair.Groups.Add(foundGroup);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        pair.Groups = new List<Group>();
+                    }
+
+                    pairs.Add(pair);
+                }
             }
 
             return pairs.OrderBy(x => x.StartTime).ToList();
@@ -330,6 +353,5 @@ public class NureParser
         {
             return null;
         }
-        
     }
 }
