@@ -13,17 +13,17 @@ A .NET library for interacting with NURE's schedule (cist.nure.ua). The library 
 
 ## 📋 Table of Contents
 
-- [Installation](#installation)
-- [Key Features](#key-features)
-- [Usage](#usage)
+- [Installation](#-installation)
+- [Key Features](#-key-features)
+- [Usage](#-usage)
     - [Getting Groups List](#getting-groups-list)
     - [Getting Teachers List](#getting-teachers-list)
     - [Getting Auditoriums List](#getting-auditoriums-list)
     - [Working with Schedule](#working-with-schedule)
-- [Data Types](#data-types)
-- [Error Handling](#error-handling)
-- [Additional Features](#additional-features)
-- [Contributing](#contributing)
+- [Data Types](#-data-types)
+- [Error Handling](#-error-handling)
+- [Additional Features](#-additional-features)
+- [Contributing](#-contributing)
 
 ## 📥 Installation
 
