@@ -17,6 +17,18 @@ public static class Cist
             throw new Exception("Error while getting auditories", e);
         }
     }
+
+    public static string GetAuditories(bool AsCist)
+    {
+        try
+        {
+            return NureParser.ParseAuditories(AsCist);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error while getting auditories", e);
+        }
+    }
     
     public static List<Group>? GetGroups()
     {
@@ -29,12 +41,36 @@ public static class Cist
             throw new Exception("Error while getting groups", e);
         }
     }
+
+    public static string GetGroups(bool AsCist)
+    {
+        try
+        {
+            return NureParser.ParseGroups(AsCist);
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error while getting groups", e);
+        }
+    }
     
     public static List<Teacher>? GetTeachers()
     {
         try
         {
             return NureParser.ParseTeachers();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error while getting teachers", e);
+        }
+    }
+
+    public static string GetTeachers(bool AsCist)
+    {
+        try
+        {
+            return NureParser.ParseTeachers(AsCist);
         }
         catch (Exception e)
         {

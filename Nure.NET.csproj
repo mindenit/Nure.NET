@@ -8,8 +8,8 @@
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mindenit/Nure.NET</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <ApplicationVersion>1.0.1</ApplicationVersion>
-    <Version>1.0.1</Version>
+    <ApplicationVersion>1.0.2</ApplicationVersion>
+    <Version>1.0.2</Version>
   </PropertyGroup>
   
   <ItemGroup>

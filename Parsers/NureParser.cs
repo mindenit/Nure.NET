@@ -43,6 +43,7 @@ public class NureParser
         List<Auditory>? auditories = new List<Auditory>();
 
         var json = Requests.GetAuditoriesJson();
+        
         var cistAuditories = JsonSerializer.Deserialize<JsonElement>(json);
 
         if (cistAuditories.TryGetProperty("university", out var university) &&
@@ -66,6 +67,16 @@ public class NureParser
         }
 
         return RemoveDuplicateAuditories(auditories);
+    }
+    
+    public static string ParseAuditories(bool asCist)
+    {
+        if (asCist)
+        {
+            var json = Requests.GetAuditoriesJson();
+            return json;
+        }
+        return "";
     }
 
     private static List<Auditory> RemoveDuplicateAuditories(List<Auditory> list)
@@ -136,6 +147,17 @@ public class NureParser
         return RemoveDuplicateGroups(groups);
     }
 
+    public static string ParseGroups(bool asCist)
+    {
+        if (asCist)
+        {
+            var json = Requests.GetGroupsJson();
+            return json;
+        }
+
+        return "";
+    }
+
     private static List<Group> RemoveDuplicateGroups(List<Group> deserialize)
     {
         return deserialize.GroupBy(x => new { x.Id, x.Name })
@@ -198,6 +220,16 @@ public class NureParser
         }
 
         return RemoveDuplicateTeachers(teachers);
+    }
+
+    public static string ParseTeachers(bool asCist)
+    {
+        if (asCist)
+        {
+            var json = Requests.GetTeachersJson();
+            return json;
+        }
+        return "";
     }
 
     private static List<Teacher> RemoveDuplicateTeachers(List<Teacher>? deserialize)
