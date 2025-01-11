@@ -3,7 +3,7 @@
 > [!NOTE]
 > This library is unofficial and not supported by cist.nure.ua administration. It is developed and maintained by students and the Mindenit Team.
 
-> [!NOTE]
+> [!IMPORTANT]
 > [Українська версія документації](README.ua.md)
 
 A .NET library for interacting with NURE's schedule (cist.nure.ua). The library provides a convenient API for accessing information about schedules, teachers, groups, and university auditoriums.
