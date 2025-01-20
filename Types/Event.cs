@@ -3,6 +3,7 @@ namespace Nure.NET.Types;
 
     public class Event
     {
+        public long? Id {get;set;}
         public int? NumberPair { get; set; }
         public Subject? Subject { get; set; }
         public long? StartTime { get; set; }
